@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../data.js"></script>
+    
+    <title>search</title>
+</head>
+
+<body>
+
+    <div class="top-section-container">
+        <h2 id="welcome-text" style=" color: #707070; font-size: 2em;   padding: 20px;  ">Welcome, User</h2>
+        <button id="Sign-Out">Sign Out</button>
+    </div>
+    <div class="search-left-container" style="background-color: orange;">
+        <h2><i class="fas fa-magnifying-glass"></i> Search</h2>
+    </div>
+    <div class="tree-left-container">
+        <h2><i class="fa-solid fa-share-nodes"></i></i> Tree</h2>
+    </div>
+    <div class="account-left-container">
+        <h2><i class="fa-regular fa-user"></i> Account</h2>
+    </div>
+    <div class="logo-search-container">
+        <img src="../images/Logo.png" alt="">
+    </div>
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search Keywords/Author">
+        <button id="search-button" class="search-button">Search</button>
+        <ul id="suggestions"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

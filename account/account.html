@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="../data.js"></script>
+    <title>Account</title>
+</head>
+
+<body>
+    
+    
+    <div class="top-section-container">
+        <h2 id="welcome-text">Welcome, User</h2>
+        <button id="Sign-Out">Sign Out</button>
+    </div>
+    <div class="big-container">
+        <div class="left-container">
+            <div class="search-left-container">
+                <h2><i class="fas fa-magnifying-glass"></i> Search</h2>
+            </div>
+            <div class="tree-left-container">
+                <h2><i class="fa-solid fa-share-nodes"></i></i> Tree</h2>
+            </div>
+            <div class="account-left-container" style="background-color: orange;">
+                <h2><i class="fa-regular fa-user"></i> Account</h2>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="account">
+                <div class="account-title">
+                    Account Information
+                </div>
+                <div class="account-info">
+                    <div class="account-section">
+                        <span class="section-title">Profile</span>
+                        <!--Replace placeholder with javascript file-->
+                        <div class="input-section">
+                            <div class="col-25">
+                                <label for="username">Username:</label>
+                            </div>
+
+                            <div class="col-75">
+                                <input class="user-input" type="text" id="username" name="username"
+                                    placeholder="Username">
+                            </div>
+
+                        </div>
+                        <div class="input-section">
+                            <div class="col-25">
+                                <label for="gender">Gender:</label>
+                            </div>
+                            <div class="col-75">
+                                <select id="gender" name="gender" class="user-input">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Non-binary">Non-binary</option>
+                                    <option value="Other">Other</option>
+                                    <option value="">Blank</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-section">
+                            <div class="col-25">
+                                <label for="dateofbirth">Birthdate:</label>
+                            </div>
+                            <div class="col-75">
+                                <input class="user-input" maxlength="10" type="date" id="dateofbirth" name="dateofbirth"
+                                    placeholder="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <button id="profile-button" class="submit-button">Change
+                            Profile</button>
+                    </div>
+                    <div class="account-section">
+                        <span class="section-title">Password</span>
+                        <div class="input-section">
+                            <input class="user-input" type="password" id="currentPassword"
+                                placeholder="Current Password">
+                        </div>
+                        <div class="input-section">
+                            <input class="user-input" type="password" id="newPassword" placeholder="New Password">
+                        </div>
+                        <div id="passwordError"></div>
+                        <div class="input-section">
+                            <input class="user-input" type="password" id="newPasswordConfirm"
+                                placeholder="Confirm New Password">
+                        </div>
+                        <div id="error-password" class="error"></div>
+                        <button id="password-button" class="submit-button">Change Password</button>
+                    </div>
+                </div>
+            </div>
+            <div class="account">
+                <div class="account-title">
+                    <span style="width: 40%;">Favorite Book</span>
+                    <div>
+                        <label for="sort">Sort:</label>
+                        <select id="sort" name="sort" class="user-input">
+                            <option value="1" selected>High to low</option>
+                            <option value="2">Low to high</option>
+                            <option value="3">Alphabet</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Resize your image to 150-250 for this to work properly -->
+                <!-- Or copy the direct link of the image for this to work-->
+                <div id="book-list" class="book-grid">
+                </div>
+            </div>
+        </div>
+        <script src="account.js"></script>
+</body>
+
+</html>

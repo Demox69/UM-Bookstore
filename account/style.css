@@ -1,0 +1,363 @@
+body {
+    margin: 0;
+    padding: 0;
+
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.top-section-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: black 3px solid;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 5%;
+}
+
+.top-section-container h2 {
+    color: #707070;
+    font-size: 2em;
+    text-align: center;
+    padding: 20px;
+}
+
+
+#Sign-Out {
+    font-size: 1.2em;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#Sign-Out:hover {
+    background-color: #45a049;
+}
+
+
+.left-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 20%;
+    border-right: 1px solid;
+}
+
+.big-container {
+    width: 100%;
+    height: 94.5%;
+    display: flex;
+}
+
+.search-left-container {
+    position: absolute;
+    top: 20.5%;
+}
+
+.search-left-container h2 {
+    font-size: 2.3vh;
+}
+
+.search-left-container h2 i {
+    font-size: 3vh;
+}
+
+.tree-left-container {
+    position: absolute;
+    top: 35.5%;
+}
+
+.tree-left-container h2 {
+    font-size: 20px;
+}
+
+.tree-left-container h2 i {
+    font-size: 4vh;
+    transform: rotate(90deg);
+}
+
+.account-left-container {
+    position: absolute;
+    top: 50.5%;
+}
+
+.account-left-container h2 {
+    font-size: 3vh;
+}
+
+.account-left-container h2 i {
+    font-size: 3vh;
+}
+
+.search-left-container,
+.tree-left-container,
+.account-left-container {
+    z-index: 1;
+    width: 60%;
+    height: 10vh;
+    border: 2px solid #dddddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.search-left-container:hover,
+.tree-left-container:hover,
+.account-left-container:hover {
+    cursor: pointer;
+    background-color: rgba(36, 236, 60, 0.444);
+}
+
+.search-left-container h2,
+.tree-left-container h2,
+.account-left-container h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.logo-search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+img {
+    mix-blend-mode: multiply;
+    clip-path: inset(0 0 120px 0);
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform: translateY(-120px);
+
+}
+
+.search-bar {
+    width: 150%;
+    max-width: 600px;
+    padding: 3vh;
+    border: 3px solid #3498db;
+    border-radius: 15px;
+    outline: none;
+    font-size: 3vh;
+    transition: border-color 0.3s;
+    flex: 1;
+}
+
+.search-bar:hover,
+.search-bar:focus {
+    border-color: #2ecc71;
+}
+
+.search-button {
+    margin-top: 25px;
+    padding: 25px 50px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s;
+}
+
+
+.search-button:hover {
+    background-color: #2ecc71;
+}
+
+#suggestions {
+
+    position: absolute;
+    top: 44%;
+    list-style-type: none;
+    background-color: #f1f1f1;
+    width: 600px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#suggestions li {
+    padding: 12px;
+    cursor: pointer;
+}
+
+#suggestions li:hover {
+    background-color: #ddd;
+}
+
+/*Account Css*/
+
+.right-container {
+    width: 100%;
+
+}
+
+.account {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    width: 100%;
+    border-bottom: 1px solid;
+}
+
+.account-title {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-items: flex-start;
+    font-size: 2rem;
+    border-bottom: 1px solid;
+    background-color: #33ccff;
+    opacity: 0.8;
+    font-weight: bold;
+}
+
+.account-info {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.account-section {
+    padding: 25;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 50%
+}
+
+.input-section {
+    display: flex;
+    padding: 5px 0px 5px 20px;
+    font-size: 1.5rem;
+}
+
+.col-25 {
+    width: 25%;
+}
+
+.col-75 {
+    width: 75%;
+}
+
+.section-title {
+    margin: 20px;
+    font-size: 2rem;
+}
+
+.submit-button {
+    margin: 20px;
+    width: max-content;
+}
+
+.user-input {
+    font-size: 1.3rem;
+}
+
+.book-grid {
+    display: flex;
+    height: 90%;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.book-item {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 10px;
+    padding: 5px;
+    height: 330px;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 10px 10px lightblue;
+    overflow: visible;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.book-item .cover-display {
+    background-size: 100%;
+    width: 75%;
+    height: 75%;
+}
+
+
+.error {
+    margin: 5px;
+    color: red;
+    font-weight: bold;
+    font-size: 1.3 rem;
+}
+
+/*https://css-tricks.com/five-methods-for-five-star-ratings/*/
+:root {
+    --star-size: 30px;
+    --star-color: black;
+    --star-background: #fc0;
+}
+
+.Stars {
+    --percent: calc(var(--rating) / 5 * 100%);
+
+    display: inline-block;
+    font-size: var(--star-size);
+    font-family: Times;
+    line-height: 1;
+
+    &::before {
+        content: '★★★★★';
+        letter-spacing: 3px;
+        background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.book-item:hover .tooltiptext {
+    visibility: visible;
+}
+
+.book-item .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    margin-left: 300px;
+    font-size: large;
+    z-index: 1;
+}
+
+.share-button {
+    padding: 5px;
+    background-color: #007BFF;
+    margin-right: 33px;
+}

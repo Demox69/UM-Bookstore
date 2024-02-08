@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <link rel="stylesheet" href="treeStyle.css">
+  <style>
+    .node rect {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 3px;
+      border-radius: 10px;
+      /* rounded corners */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      /* subtle shadow */
+    }
+
+    .node:hover rect {
+      fill: #e6f7ff;
+      stroke: #1890ff;
+    }
+
+
+    .node text {
+      font: 20px 'Segoe UI', sans-serif;
+      /* updated font */
+      fill: #333;
+      cursor: pointer;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
+      opacity: 1;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .link.hidden {
+      opacity: 0;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      /* Hide any potential scrollbars */
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      /* Use the full height of the viewport */
+    }
+
+    .tree-container {
+      flex: 0 1 80%;
+      max-width: 1200px;
+      overflow: auto;
+      background-color: #ffffff;
+      margin-top: 100px;
+
+    }
+
+    .shopping-cart {
+      overflow: auto;
+      position: absolute;
+      top: 54%;
+      right: 0%;
+      width: 320px;
+      height: 40%;
+      background-color: #fff;
+      border: 2px solid rgb(0, 0, 0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      visibility: hidden;
+    }
+
+
+    .cart-items {
+      padding: 10px;
+      padding-top: 20px;
+      overflow-y: auto;
+      height: 300px;
+    }
+
+    .cart-item {
+      padding: 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+
+    }
+
+    .cart-item:hover {
+      background-color: #f0f8ff;
+      /* LightSteelBlue */
+    }
+
+    .quantity-controls {
+      display: none;
+      float: right;
+    }
+
+    .quantity-controls .control-button {
+      cursor: pointer;
+      font-size: 18px;
+      margin: 0 5px;
+    }
+
+    .quantity-controls .control-button:hover {
+      fill: #644800;
+      /* Darker shade of green on hover */
+    }
+
+    .control-button {
+      cursor: pointer;
+      font-size: 18px;
+      margin: 0 5px;
+    }
+
+    .close-button {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .close-button text {
+      font-size: 18px;
+    }
+
+    .close-button rect {
+      fill: red;
+      stroke: rgb(255, 0, 0);
+    }
+
+    .info-box {
+      overflow: auto;
+      position: absolute;
+      top: 11%;
+      right: 0%;
+      /* Adjust the bottom position as needed */
+      width: 300px;
+      height: 40%;
+      background-color: lightblue;
+      background-color: #fff;
+      border: 2px solid rgb(0, 0, 0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      padding: 10px;
+      visibility: hidden;
+    }
+
+    .info-box-header {
+      background-color: #1890ff;
+      color: #fff;
+      padding: 5px;
+      text-align: center;
+      margin-bottom: 10px;
+      top: 250px;
+      /* Adjust as needed */
+      right: 0px;
+    }
+
+    .search-box {
+      overflow: auto;
+      position: absolute;
+      top: 11%;
+      right: 0%;
+      /* Adjust the bottom position as needed */
+      width: 300px;
+      height: 40%;
+      background-color: lightblue;
+      background-color: #fff;
+      border: 2px solid rgb(0, 0, 0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      padding: 10px;
+      visibility: visible;
+    }
+
+    .search-box-header {
+      background-color: #1890ff;
+      color: #fff;
+      padding: 5px;
+      text-align: center;
+      margin-bottom: 10px;
+      top: 250px;
+      /* Adjust as needed */
+      right: 0px;
+    }
+
+    .checkout-button {
+      width: 100px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .checkout-button:hover {
+      fill: #006400;
+      /* Darker shade of green on hover */
+    }
+
+    .remove-button {
+      cursor: pointer;
+      font-size: 20px;
+      fill: red;
+      display: none;
+      /* Hide the remove button by default */
+    }
+
+    .remove-button:hover {
+      fill: red;
+    }
+
+    #searchInput {
+      width: 70%;
+      padding: 8px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+
+    #searchButton {
+      width: 25%;
+      padding: 8px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .search-suggestions {
+      margin-top: 10px;
+    }
+
+    .search-node {
+      padding: 8px;
+      margin-bottom: 5px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .search-node:hover {
+      background-color: #f0f8ff;
+    }
+
+    .info-text {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .summary-text {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-section-container">
+    <h2 id="welcome-text" style=" color: #707070; font-size: 2em;   padding: 20px;  ">Welcome, User</h2>
+    <button id="Sign-Out">Sign Out</button>
+  </div>
+
+  <div class="search-left-container">
+    <h2><i class="fas fa-magnifying-glass"></i> Search</h2>
+  </div>
+  <div class="tree-left-container " style="background-color: orange;">
+    <h2><i class=" fa-solid fa-share-nodes"></i></i> Tree</h2>
+  </div>
+  <div class="account-left-container">
+    <h2><i class="fa-regular fa-user"></i> Account</h2>
+  </div>
+  <div id="tooltip"
+    style="position: absolute; visibility: hidden; background-color: lightgrey; padding: 5px; border-radius: 5px;">
+  </div>
+
+  <div class="container">
+
+    <div class="tree-container">
+
+      <!-- Tree SVG will be appended here -->
+      <script src="../data.js"></script>
+      <script>
+        var userEmail = localStorage.getItem("currentUser");
+        if (userEmail == null) {
+          userEmail = "user@example.com"
+        }
+        var currentUser = JSON.parse(localStorage.getItem(userEmail));
+        document.getElementById("welcome-text").innerText = "Hello" + ", " + currentUser.username;
+        // Your existing JavaScript code for the tree
+        var data = JSON.parse(localStorage.getItem("tree"));
+        if (data == null) {
+          data = { Name: "Empty", children: [{ Name: "Empty" }] };
+        }
+        var userEmail = localStorage.getItem("currentUser");
+        var currentUser = JSON.parse(localStorage.getItem(userEmail));
+
+
+
+        var margin = {
+          top: 20,
+          right: 120,
+          bottom: 20,
+          left: 120
+        },
+          width = 1000 - margin.right - margin.left,
+          height = 500 - margin.top - margin.bottom;
+
+        var i = 0,
+          duration = 100,
+          root;
+
+        var tree = d3.tree().size([width, height]);
+
+        var diagonal = d3.linkVertical()
+          .x(function (d) {
+            return d.x;
+          })
+          .y(function (d) {
+            return d.y;
+          });
+
+        var svg = d3.select(".tree-container").append("svg")
+          .attr("width", width + margin.right + margin.left)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        root = d3.hierarchy(data);
+        root.x0 = width / 2;
+        root.y0 = 0;
+
+        // Initially hide children of Year nodes
+        root.children.forEach(collapse);
+
+        update(root);
+
+        var searchBook = localStorage.getItem("queryID");
+        localStorage.removeItem("queryID")
+        if (searchBook && searchBook !== "undefined") {
+          var searchTextbook = JSON.parse(JSON.stringify(textbooks[searchBook])).Title;
+          searchAndHighlightNode(searchTextbook);
+        }
+        d3.select(self.frameElement).style("height", "500px");
+
+        function searchAndHighlightNode(bookTitle) {
+          // Traverse the tree to find the node with the matching book title
+          var foundNode = traverseTreeAndSearch(root, bookTitle);
+
+          if (foundNode) {
+            // Highlight the found node
+            highlightNode(foundNode);
+          }
+        }
+
+        function traverseTreeAndSearch(node, targetTitle) {
+          console.log(node);
+          if (node.data.Title && node.data.Title == targetTitle) {
+            return node;
+          }
+
+          if (node.children) {
+            for (const child of node.children) {
+              const result = traverseTreeAndSearch(child, targetTitle);
+              if (result) {
+                return result;
+              }
+            }
+          } else if (node._children) {
+            for (const child of node._children) {
+              const result = traverseTreeAndSearch(child, targetTitle);
+              if (result) {
+                return result;
+              }
+            }
+          }
+
+          return null;
+        }
+
+        function highlightNode(node) {
+          var current = node;
+          while (current.parent) {
+            if (current.parent._children) {
+              current.parent.children = current.parent._children;
+              current.parent._children = null;
+            }
+            current = current.parent;
+          }
+          update(root);
+        }
+
+        var storeItems = localStorage.getItem("cartItems") == null ? [] : JSON.parse(localStorage.getItem("cartItems"))
+        var shoppingCart = {
+          name: "Shopping Cart",
+          children: storeItems
+        };
+
+
+        function collapse(d) {
+          if (d.children) {
+            d._children = d.children;
+            d._children.forEach(collapse);
+            d.children = null;
+          }
+        }
+
+        var simulation = d3.forceSimulation()
+          .force("link", d3.forceLink().id(function (d) {
+            return d.id;
+          }).strength(2))
+          .force("charge", d3.forceManyBody().strength(-50))
+          .force("center", d3.forceCenter(width / 2, height / 2));
+
+        function update(source) {
+          // Compute the new tree layout.
+          var nodes = tree(root).descendants(),
+            links = tree(root).links();
+
+          // Declare the links…
+          var link = svg.selectAll("path.link")
+            .data(links, function (d) {
+              return d.target.id;
+            });
+
+          // Enter the links.
+          link.enter().insert("path", "g")
+            .attr("class", "link")
+            .attr("d", function (d) {
+              return diagonal(d); // Use the diagonal function directly with the data
+            });
+
+          // Update the display of nodes and links.
+          link.transition()
+            .duration(duration)
+            .attr("d", diagonal)
+            .style("opacity", 1)
+            .attr("class", function (d) {
+              return "link" + (d.target.children || d.target._children ? "" : " hidden");
+            });
+
+          link.exit().transition()
+            .duration(duration)
+            .style("opacity", 0)
+            .remove();
+
+          // Declare the nodes…
+          var node = svg.selectAll("g.node")
+            .data(nodes, function (d) {
+              return d.id;
+            });
+          var initialX = null;
+          var initialY = null;
+          // Enter the nodes.
+          var nodeEnter = node.enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function (d) {
+              return "translate(" + d.x + "," + d.y + ")";
+            })
+            .on("click", function (d) {
+              toggle(d);
+              update(d);
+            })
+            .call(d3.drag()
+              .on("start", function (d) {
+                if (isLeafNode(d)) {
+                  if (!d.dragStarted) {
+                    d.dragStarted = true;
+                    initialX = d.x;
+                    initialY = d.y;
+                    d3.select(this).classed("dragging", true); // Add dragging class
+                    var cart = d3.select(".shopping-cart");
+                    var visibility = cart.style("visibility");
+                    cart.style("visibility", "visible");
+
+                  }
+                }
+              })
+              .on("drag", function (d) {
+                if (isLeafNode(d) && d.dragStarted) {
+                  d.x += d3.event.dx;
+                  d.y += d3.event.dy;
+                  d3.select(this).attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                  });
+                }
+              })
+              .on("end", function (d) {
+                if (isLeafNode(d) && d.dragStarted) {
+                  d.dragStarted = false;
+                  d.x = initialX;
+                  d.y = initialY;
+                  d3.select(this).transition().duration(500).attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                  });
+                }
+              }));
+
+          nodeEnter.append("rect")
+            .attr("width", function (d) {
+              return d.data.Name.length * 8;
+            })
+            .attr("height", 20)
+            .attr("x", function (d) {
+              return -(d.data.Name.length * 4);
+            })
+            .attr("y", -10)
+            .style("fill", "#fff");
+
+          nodeEnter.on("mouseover", function (d) {
+            if (!d.children && !d._children) { // Condition to check if the node (class) has no textbooks
+              d3.select("#tooltip")
+                .style("visibility", "visible")
+                .text("--Cannot Expand Further--" + d.data.Name)
+                .style("left", (d3.event.pageX + 5) + "px") // Positioning
+                .style("top", (d3.event.pageY - 28) + "px")
+                .style("max-width", "175px")
+                .style("text-align", "center");
+            }
+            else {
+              d3.select("#tooltip")
+                .style("visibility", "visible")
+                .text(d.data.Name)
+                .style("left", (d3.event.pageX + 5) + "px") // Positioning
+                .style("top", (d3.event.pageY - 28) + "px")
+                .style("max-width", "175px");
+            }
+          })
+            .on("mouseout", function () {
+              d3.select("#tooltip").style("visibility", "hidden");
+            });
+
+          nodeEnter.append("text")
+            .attr("x", 0)
+            .attr("max-width", "100px")
+            .attr("dy", ".35em")
+            .attr("text-anchor", "middle")
+            .text(function (d) {
+              if (d.data.YearID != null && d.data.DepartmentID != null && d.data.CourseID == null) {
+                return d.data.ID;
+              }
+              return d.data.Name;
+
+            })
+            .style("fill-opacity", 1)
+            .each(function (d) {
+              // Get the length of the text
+              var textLength = this.getComputedTextLength();
+
+              // Add some padding and set a minimum width
+              var rectWidth = Math.max(textLength + 10, 40);
+
+              d3.select(this.parentNode).select("rect")
+                .attr("width", rectWidth)
+                .attr("height", 20)
+                .attr("x", -rectWidth / 2)
+                .attr("y", -10);
+            });
+
+          // Update the display of nodes.
+          node.transition()
+            .duration(duration)
+            .attr("transform", function (d) {
+              return "translate(" + d.x + "," + d.y + ")";
+            })
+            .style("opacity", 1);
+
+          // Exit the nodes.
+          node.exit()
+            .transition()
+            .duration(duration)
+            .style("opacity", 0)
+            .remove();
+        }
+
+        function isLeafNode(d) {
+          return !d.children && !d._children && (d.depth == 3);
+        }
+
+        var infoBox = d3.select(".tree-container").append("div")
+          .attr("class", "info-box")
+
+        var searchBox = d3.select(".tree-container").append("div")
+          .attr("class", "search-box")
+        searchBox.html(`
+          <div class="search-box-header">
+            <h2><i class="fas fa-search"></i> Search</h2>
+          </div>
+          <input type="text" id="searchInput" placeholder="Search departments or root node...">
+          <button id="searchButton">Search</button>
+          <div class="search-suggestions">
+            <div class="search-node" data-name="MATH">MATH</div>
+            <div class="search-node" data-name="COMP">Computer Science</div>
+            <div class="search-node" data-name="STAT">Statistics</div>
+          </div>
+        `);
+
+        document.getElementById("searchButton").addEventListener('click', function () {
+          const department = document.getElementById("searchInput").value;
+          reconstructTree(department);
+          location.reload();
+        });
+
+        function reconstructTree(departmentID) {
+          localStorage.removeItem("tree");
+          var newRoot = JSON.parse(JSON.stringify(departments[departmentID]));
+          for (let i = 0; i < newRoot.children.length; i++) {
+            var yearID = newRoot.children[i]
+            var yearInfo = JSON.parse(JSON.stringify(years[yearID]));
+            for (let j = 0; j < yearInfo.children.length; j++) {
+              var courseID = yearInfo.children[j];
+              var courseInfo = JSON.parse(JSON.stringify(courses[courseID]));
+              for (let k = 0; k < courseInfo.children.length; k++) {
+                var bookID = courseInfo.children[k];
+                var bookInfo = JSON.parse(JSON.stringify(textbooks[bookID]));
+                bookInfo.Name = bookInfo.Title;
+                courseInfo.children[k] = bookInfo;
+              }
+              yearInfo.children[j] = courseInfo;
+            }
+            newRoot.children[i] = yearInfo
+          }
+          localStorage.setItem("tree", JSON.stringify(newRoot));
+          data = JSON.parse(localStorage.getItem("tree"));
+          root = d3.hierarchy(data);
+          root.children.forEach(collapse);
+          update(root);
+        }
+
+        document.querySelectorAll(".search-node").forEach(node => {
+          node.onclick = event => {
+            const searchTerm = node.dataset.name;
+            document.getElementById("searchInput").value = searchTerm;
+          }
+        })
+
+        function sharePopUp(link) {
+          alert(`Sharing link: \n ${link}`)
+        }
+
+        function rateBook(event, ratingDiv, id) {
+          var rect = ratingDiv.getBoundingClientRect();
+          var newRating = ((event.clientX - rect.left) / (rect.right - rect.left)) * 5;
+          ratingDiv.style.setProperty("--rating", newRating);
+          var setBook = false
+          for (let i = 0; i < currentUser.bookList.length; i++) {
+            if (currentUser.bookList[i].id == id) {
+              currentUser.bookList[i].rating = newRating;
+              setBook = true
+              break;
+            }
+          }
+
+          if (!setBook) {
+            currentUser.bookList = [...currentUser.bookList, { "id": id, rating: newRating }]
+          }
+          localStorage.setItem(currentUser.email, JSON.stringify(currentUser));
+        }
+        function updateInfoBox(d) {
+          // Update the content of the info box based on the clicked leaf node
+          if (isLeafNode(d)) {
+            searchBox.style("visibility", "hidden");
+            infoBox.style("visibility", "visible");
+            var bookInfo = d.data;
+
+            var rating = currentUser.bookList.filter((obj) => { return obj.id == bookInfo.ID })
+            if (rating.length === 0) {
+              rating = 0
+            }
+            else {
+              rating = rating[0].rating;
+            }
+            infoBox.html(
+              '<div class="info-box-header">Overview</div>' +
+              `<div id="rating" class="Stars" style="--rating: ${rating};" aria-label="Rating of this product is 2.3 out of 5."></div>` +
+              `<img src=${bookInfo.CoverImage} alt="book1" class="textbook" style="height:250px; width:150px; display: block; margin: auto;">` +
+              `<div class="info-text">Title: ${bookInfo.Title}</div>` +
+              `<div class="info-text">Author: ${bookInfo.Author}</div>` +
+              `<div class="info-text">Version: ${bookInfo.Version}</div>` +
+              '<div class="book-item" style="display: flex; justify-content: space-around; margin-top: 10px;">' +
+              `<button id="add-to-cart" style="padding:5px; background-color: orange; margin-left: 35px;">ADD</button>` +
+              '<button id="share-button" style="padding:5px; background-color: #007BFF; margin-right: 33px;"><i class="fa-solid fa-share"></i></button>' +
+              '</div>' +
+              `<div class="summary-text">Summary: ${bookInfo.PreviewPage}</div>`
+            );
+            document.getElementById("share-button").addEventListener('click', () => { sharePopUp(bookInfo.ShareLink) })
+            document.getElementById("add-to-cart").addEventListener('click', () => { addItemToCart(bookInfo) });
+            document.getElementById("rating").addEventListener('click', (event) => { rateBook(event, document.getElementById("rating"), bookInfo.ID) })
+          }
+          else {
+            // Clear the info box if a non-leaf node is clicked
+            infoBox.html('');
+            infoBox.style("visibility", "hidden");
+            searchBox.style("visibility", "visible");
+          }
+        }
+
+
+        function addItemToCart(addItem) {
+          let cartItem = shoppingCart.children.find(item => item.Name === addItem.Name);
+          if (cartItem) {
+            cartItem.quantity = (cartItem.quantity || 1) + 1;
+          }
+          else {
+            shoppingCart.children.push({ ...addItem, quantity: 1 });
+          }
+
+          updateCartItems();
+
+          // Check if the shopping cart is hidden and show it if necessary
+          var cart = d3.select(".shopping-cart");
+          if (cart.style("visibility") === "hidden") {
+            cart.style("visibility", "visible");
+          }
+          localStorage.setItem('cartItems', JSON.stringify(shoppingCart.children));
+        }
+
+        function toggle(d) {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            // Collapse all other year children
+            if (d.parent) {
+              d.parent.children.forEach(function (child) {
+                if (child !== d && child.children) {
+                  collapse(child);
+                }
+              });
+            }
+            d.children = d._children;
+            d._children = null;
+          }
+          updateInfoBox(d);
+        }
+
+      </script>
+    </div>
+    <div>
+      <script>
+        var cartGroup = d3.select(".tree-container").append("svg")
+          .attr("class", "shopping-cart")
+
+        cartGroup.append("rect")
+          .style("fill", "#fff")
+          .style("stroke", "black");
+
+        cartGroup.append("text")
+          .attr("class", "cart-header")
+          .attr("x", 100)
+          .attr("y", 30)
+          .style("font-size", "23px")
+          .text("Shopping Cart");
+
+        var closeBtn = cartGroup.append("g")
+          .attr("class", "close-button")
+          .attr("transform", "translate(10, 14)")
+          .on("click", function () {
+            // Add functionality to close the cart here
+            cartGroup.style("visibility", "hidden");
+          });
+
+        closeBtn.append("rect")
+          .attr("width", 20)
+          .attr("height", 20)
+          .style("fill", "#ccc")
+          .style("stroke", "black");
+
+        closeBtn.append("text")
+          .attr("x", 10)
+          .attr("y", 15)
+          .attr("text-anchor", "middle")
+          .text("X");
+
+        // Checkout button
+        cartGroup.append("rect")
+          .attr("class", "checkout-button")
+          .style("fill", "orange")
+          .style("stroke", "black")
+          .attr("height", "100px")
+          .attr("x", "65%")
+          .attr("y", "90%")
+          .on("click", function () {
+            localStorage.setItem("cartItems", JSON.stringify(shoppingCart.children));
+            window.location.href = "../checkout-files/check-out.html";
+          });
+
+        cartGroup.append("text")
+          .attr("x", "78.5%")
+          .attr("y", "94%")
+          .attr("text-anchor", "middle")
+          .style("fill", "#000")
+          .style("pointer-events", "none")
+          .text("Checkout");
+
+        var itemsContainer = cartGroup.append("g")
+          .attr("class", "cart-items")
+          .attr("transform", "translate(10, 55)");
+
+        // Event listener for the tree container to capture clicks and add to the cart
+        d3.select(".tree-container")
+          .on("mousemove", function () {
+            var draggedNode = d3.select(".node.dragging").node();
+            if (draggedNode) {
+              var mouseX = d3.event.clientX;
+              var mouseY = d3.event.clientY;
+
+              // Check if the mouse is inside the shopping cart area
+              var cartRect = cartGroup.node().getBoundingClientRect();
+              if (
+                mouseX > cartRect.left &&
+                mouseX < cartRect.right &&
+                mouseY > cartRect.top &&
+                mouseY < cartRect.bottom
+              ) {
+                // Check if the dragged node is a leaf node
+                if (isLeafNode(draggedNode.__data__)) {
+                  // Add the course to the shopping cart
+                  var draggedItem = draggedNode.__data__.data;
+
+                  // Check if the item is already in the cart
+                  addItemToCart(draggedItem);
+                }
+
+                // Reset the dragging class
+                d3.select(".node.dragging").classed("dragging", false);
+              }
+            }
+          });
+
+
+        function updateCartItems() {
+          var items = itemsContainer.selectAll(".cart-item").data(shoppingCart.children);
+          items.exit().remove();
+          var dashesLine;
+
+          // Update existing items
+          items.select(".quantity-text").text(function (d) {
+            return d.Name.substr(0, 30) + "   Qty: " + d.quantity;
+          });
+
+          // Create new items
+          var newItem = items.enter().append("g")
+            .attr("class", "cart-item")
+            .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; })
+            .on("mouseover", function (d) {
+              d3.select(this).select(".remove-button").style("display", "inline");
+            })
+            .on("mouseout", function (d) {
+              d3.select(this).select(".remove-button").style("display", "none");
+            });
+
+          // Display name and quantity for both existing and new items
+          var nameText = newItem.append("text")
+            .attr("class", "quantity-text")
+            .attr("text-anchor", "start")
+            .text(function (d) {
+              return d.Name.substr(0, 30) + "   Qty: " + d.quantity;
+            });
+
+          items.select(".remove-button")
+            .text(function (d) {
+              var nameText = d3.select(this.parentNode).select(".quantity-text");
+              var textLength = nameText.node() ? nameText.node().getComputedTextLength() : 180;
+              return Array.from({ length: Math.ceil(textLength / 8) }, () => "-").join('');
+            });
+
+          // Set the length of the dynamic line
+          newItem.append("text")
+            .attr("class", "remove-button")
+            .attr("x", 0)
+            .attr("y", 0)
+            .text(dashesLine)
+            .on("click", function (d) {
+              // Remove the item from the shopping cart
+              shoppingCart.children = shoppingCart.children.filter(item => item.Name !== d.Name);
+              updateCartItems();
+            });
+
+          // Merge the new items with the existing items
+          items = items.merge(newItem);
+
+          // Update the length of the dynamic line for all items
+          items.select(".remove-button")
+            .text(function (d) {
+              var nameText = d3.select(this.parentNode).select(".quantity-text");
+              var textLength = nameText.node() ? nameText.node().getComputedTextLength() : 180;
+              return Array.from({ length: Math.ceil(textLength / 8) }, () => "-").join('');
+            });
+        }
+
+
+        updateCartItems();
+
+        document.getElementById("Sign-Out").addEventListener('click', () => {
+          localStorage.removeItem("currentUser");
+          localStorage.removeItem('cartItems');
+          localStorage.removeItem('tree');
+          window.location.href = "../index.html";
+        });
+
+        document.querySelector('.search-left-container').addEventListener('click', function () {
+          localStorage.setItem("cartItems", JSON.stringify(shoppingCart.children));
+          window.location.href = "../search-files/search.html";
+        });
+
+        document.querySelector('.tree-left-container').addEventListener('click', function () {
+          localStorage.setItem("cartItems", JSON.stringify(shoppingCart.children));
+          window.location.href = "../tree-struct/tree.html";
+        });
+
+        document.querySelector('.account-left-container').addEventListener('click', function () {
+          localStorage.setItem("cartItems", JSON.stringify(shoppingCart.children));
+          window.location.href = "../account/account.html";
+        });
+      </script>
+    </div>
+  </div>
+</body>
+
+</html>

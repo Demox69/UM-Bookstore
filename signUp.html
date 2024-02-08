@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Page</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f7f7f7;
+    }
+
+    .form-container {
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+    }
+
+    .form-container img {
+      height: 160px;
+      width: 160px;
+      margin: auto;
+      /* Centers the image */
+      display: block;
+    }
+
+    input[type=email],
+    input[type=password],
+    input[type=text] {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: calc(100% - 20px);
+      /* Adjusts the width to account for padding */
+    }
+
+    button {
+      background-color: #5cb85c;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      width: 100%;
+      /* Ensures buttons are full width */
+    }
+
+    button:hover {
+      background-color: #4cae4c;
+    }
+
+    .footer {
+      text-align: center;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #5cb85c;
+      display: block;
+      /* Makes the link take up the full width */
+      margin-bottom: 10px;
+    }
+
+    .footer a.forgot-password {
+      color: #ff0000;
+      /* Change this to whatever color you like */
+      margin-bottom: 0;
+      /* Removes the margin if it's the last item */
+    }
+
+    .footer button {
+      width: 100%;
+      /* Ensures buttons are full width */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="form-container">
+    <img src="./Images/Logo.png" alt="Book Icon">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    *Password must be at least 12 characters long.
+    <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+    <button onclick="handleSignup()">Sign Up</button>
+    <a href="#" onclick="handleGoToLogin()">Already have an account? Log in</a>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="newStyle.css">
+</head>
+
+<body>
+    <div class="top-section-container">
+        <div class="checkout-header">
+
+            <h1>Checkout</h1>
+            <button id="back-button">back</button>
+        </div>
+
+    </div>
+
+
+    <div class="cart-container">
+        <div class="cart">
+            <h1>Shopping Cart (2)</h1>
+
+        </div>
+        <div class="price-breakdown">
+            <h3>Price Summary</h3>
+
+            <div class="price-item">
+                <span>GST:</span>
+                <span id="gst-price">$0.00</span>
+            </div>
+            <div class="price-item">
+                <span>PST:</span>
+                <span id="pst-price">$0.00</span>
+            </div>
+            <div class="price-item total">
+                <strong>Order Total:</strong>
+                <strong id="total-price">$0.00</strong>
+            </div>
+
+        </div>
+
+        <div id="payment-methods" class="checkout-container">
+            <h2>Payment Methods</h2>
+            <div class="payment-options">
+                <div class="payment-option">
+                    <i class="fab fa-paypal payment-icon"></i>
+                    <span class="payment-label">PayPal</span>
+                </div>
+                <div class="payment-option">
+                    <i class="fab fa-apple-pay payment-icon"></i>
+                    <span class="payment-label">Apple Pay</span>
+                </div>
+            </div>
+            <div class="or-divider">or</div>
+            <form class="credit-card-form">
+                <input type="text" class="form-field" placeholder="Credit Card Number" required>
+                <input type="text" class="form-field" placeholder="Card holder name" required>
+                <div class="form-field-group">
+                    <input type="text" class="form-field" placeholder="Expiration Date (MM/YY)" required>
+                    <input type="text" class="form-field" placeholder="CCV" required>
+                </div>
+                <input type="email" class="form-field" placeholder="Email" required>
+            </form>
+            <button id="place-order" class="pay-button">Place order</button>
+        </div>
+    </div>
+
+    <script src="check-out.js"></script>
+</body>
+
+</html>

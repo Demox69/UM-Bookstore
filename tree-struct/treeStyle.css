@@ -1,0 +1,186 @@
+.top-section-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 5vh;
+   
+    border-bottom: black solid 3px;
+    
+}
+
+#Sign-Out {
+    font-size: 1.2em;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#Sign-Out:hover {
+    background-color: #45a049;
+}
+
+
+.search-left-container {
+    position: absolute;
+    top: 25%;
+}
+
+.search-left-container h2 {
+    font-size: 2.3vh;
+}
+
+.search-left-container h2 i {
+    font-size: 3vh;
+}
+
+.tree-left-container {
+    position: absolute;
+    top: 40%;
+}
+
+.tree-left-container h2 {
+    font-size: 20px;
+}
+
+.tree-left-container h2 i {
+    font-size: 4vh;
+    transform: rotate(90deg);
+}
+
+.account-left-container {
+    position: absolute;
+    top: 55%;
+}
+
+.account-left-container h2 {
+    font-size: 3vh;
+}
+
+.account-left-container h2 i {
+    font-size: 3vh;
+}
+
+.search-left-container,
+.tree-left-container,
+.account-left-container {
+    z-index: 1;
+    width: 10%;
+    height: 10vh;
+    border: 2px solid #dddddd;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.search-left-container:hover,
+.tree-left-container:hover,
+.account-left-container:hover {
+    cursor: pointer;
+    background-color: rgba(36, 236, 60, 0.444);
+}
+
+.search-left-container h2,
+.tree-left-container h2,
+.account-left-container h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+
+#add-to-cart:hover{
+    background-color: #b45b02;
+    cursor:pointer;
+}
+
+:root {
+    --star-size: 30px;
+    --star-color: black;
+    --star-background: #fc0;
+}
+
+.Stars {
+    --percent: calc(var(--rating) / 5 * 100%);
+
+    display: inline-block;
+    font-size: var(--star-size);
+    font-family: Times;
+    line-height: 1;
+    transform: translateX(80px); 
+  
+
+    &::before {
+        
+        content: '★★★★★';
+        
+        letter-spacing: 3px;
+        background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+    
+
+
+@media screen and (max-width: 768px) {
+    .top-section-container,
+    .search-left-container,
+    .tree-left-container,
+    .account-left-container {
+        width: 100%; /* Make each container full width */
+        margin-bottom: 10px;
+        order: -1; /* Ensure these elements are at the top */
+    
+
+    /* Since we don't have .left-container in your HTML, we adjust the specific elements themselves */
+    .search-left-container,
+    .tree-left-container,
+    .account-left-container {
+        position: static; /* Override the absolute positioning */
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Adjust the logo and search bar sizes */
+    .logo-search-container img {
+        width: 80%;
+        clip-path: none;
+    }
+
+    .search-bar {
+        width: 90%;
+        font-size: 1em;
+        padding: 0.5em;
+    }
+
+    .search-button {
+        width: 90%;
+        padding: 0.5em;
+        font-size: 1em;
+    }
+}
+}
+    
+    }}
+
+#share-button{
+    cursor:pointer;
+}
+
+
+#tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: lightgrey;
+    padding: 5px;
+    border-radius: 5px;
+    /* Additional styles (e.g., font size, color) */
+  }

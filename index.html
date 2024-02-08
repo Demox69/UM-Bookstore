@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f7f7f7;
+    }
+
+    .form-container {
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+    }
+
+    .form-container img {
+      height: 160px;
+      width: 160px;
+      margin: auto;
+      display: block;
+    }
+
+    input[type=email],
+    input[type=password] {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: calc(100% - 20px);
+    }
+
+    button {
+      background-color: #5cb85c;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #4cae4c;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #5cb85c;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer a.forgot-password {
+      color: #ff0000;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="form-container">
+    <img src="./images/Logo.png" alt="Book Icon">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="handleLogin()">LOGIN</button>
+    <a href="#" class="forgot-password" onclick="handleForgotPassword()">Forgot password?</a>
+    <button onclick="handleGoToSignup()">Sign up</button>
+    <button onclick="handleContinueAsGuest()">Continue as guest</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
